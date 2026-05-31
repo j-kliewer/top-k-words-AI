@@ -53,7 +53,6 @@ starter-repo/
 │   ├── test_tokenizer.py     # 20+ test cases
 │   ├── test_counter.py       # 15+ test cases
 │   ├── test_cli.py           # 20+ test cases
-│   └── test_plot_data.py     # (existing)
 ├── data/
 │   └── sample.txt            # Test data
 ├── pyproject.toml            # Updated with console script

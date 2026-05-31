@@ -34,4 +34,3 @@ ENV/
 # Project specific
 *.png
 *.csv
-!data/sample.csv
