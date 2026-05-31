@@ -152,28 +152,32 @@ class TestNormalizeAndTokenize:
 
     # ===== Edge Cases =====
     def test_only_apostrophes(self) -> None:
-        """Test string of only apostrophes."""
+        """Test string of only apostrophes returns no tokens."""
         result = normalize_and_tokenize("'''")
-        assert result == ["'''"]  # This is technically a "word" per our regex
+        assert result == []
 
     def test_only_hyphens(self) -> None:
-        """Test string of only hyphens."""
+        """Test string of only hyphens returns no tokens."""
         result = normalize_and_tokenize("---")
-        assert result == ["---"]  # This is technically a "word" per our regex
+        assert result == []
 
     def test_mixed_only_apostrophes_and_hyphens(self) -> None:
-        """Test string of apostrophes and hyphens."""
+        """Test string of apostrophes and hyphens returns no tokens."""
         result = normalize_and_tokenize("'-'-'")
-        assert result == ["'-'-'"]
+        assert result == []
 
     def test_duplicates_preserved(self) -> None:
         """Test that duplicate words are preserved in output."""
         result = normalize_and_tokenize("apple banana apple")
         assert result == ["apple", "banana", "apple"]
 
-    def test_unicode_text_ignored(self) -> None:
-        """Test that non-ASCII Unicode is treated as delimiter (not extracted)."""
-        # This regex only matches [a-z'-], so Unicode chars act as delimiters
+    def test_duplicate_counts_case_insensitive(self) -> None:
+        """Test counting duplicate words with mixed case input."""
+        result = normalize_and_tokenize("Apple apple APPLE banana Banana")
+        assert result.count("apple") == 3
+        assert result.count("banana") == 2
+
+    def test_unicode_text_preserved(self) -> None:
+        """Test that accented Latin letters are preserved as part of words."""
         result = normalize_and_tokenize("café naïve")
-        # "caf" + "naïve" split at non-ASCII
-        assert result == ["caf", "nave"]  # ï and é are not matched by [a-z'-]
+        assert result == ["café", "naïve"]

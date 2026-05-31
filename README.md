@@ -5,7 +5,7 @@ A high-performance Python command-line tool that identifies and ranks the K most
 ## Features
 
 - **Multiple input modes**: Read from files or direct text input
-- **Smart word processing**: Preserves contractions (`don't`) and hyphens (`co-operate`) while removing punctuation
+- **Smart word processing**: Preserves contractions (`don't`), hyphens (`co-operate`), and accented letters (`café`), removes punctuation, and treats surrounding quotes as delimiters
 - **Efficient ranking**: O(n) frequency counting with alphabetical tie-breaking for deterministic results
 - **Debug mode**: Detailed logging for troubleshooting and analysis
 - **User-friendly error handling**: Clear error messages with no Python stack traces
@@ -64,7 +64,7 @@ Input (file or text)
         ↓
  Tokenizer Layer (tokenizer.py)
  └─ Text normalization
- └─ Word extraction: [a-z'-]+
+ └─ Word extraction: preserves internal apostrophes/hyphens, strips surrounding quotes
         ↓
   Counter Layer (counter.py)
   ├─ Frequency counting: O(n)
@@ -100,7 +100,7 @@ Input (file or text)
 
 ### What counts as a word?
 
-A word is a sequence of alphabetic characters, apostrophes, and hyphens:
+A word is a sequence of alphabetic characters, apostrophes, and hyphens. Surrounding quotes are treated as delimiters, so `"hello"` becomes `hello`:
 
 | Input | Result |
 |-------|--------|
@@ -114,6 +114,7 @@ A word is a sequence of alphabetic characters, apostrophes, and hyphens:
 - All text converted to **lowercase**
 - **Numbers** treated as delimiters (removed)
 - **Punctuation** removed except apostrophes and hyphens
+- Leading/trailing apostrophes and hyphens around words are stripped; internal ones are preserved
 - **Multiple spaces/delimiters** produce no empty tokens
 
 ### Ranking
@@ -257,18 +258,18 @@ pre-commit install
 
 ### Regex Pattern for Tokenization
 
-**Decision:** Use regex pattern `[a-z'-]+` for word extraction
+**Decision:** Use a Unicode-aware regex for word extraction
 
 **Why:** 
 - Efficient single-pass extraction
 - Clear word boundary definition
-- Preserves contractions and hyphens as specified
+- Preserves contractions, hyphens, and accented letters while rejecting pure punctuation tokens
 
 **Alternatives Considered:**
 - NLTK or spaCy (more complex, external dependencies)
 - Manual iteration (less efficient, more error-prone)
 
-**Tradeoff:** ASCII-only (acceptable for MVP); multilingual support could be added later
+**Tradeoff:** Supports accented Latin letters and standard word forms; still avoids complex NLP dependencies
 
 ### collections.Counter for Frequency Counting
 
@@ -378,8 +379,8 @@ top_k = get_top_k(freq, 5)
 
 Edit the regex pattern in `tokenizer.py`:
 ```python
-# Current pattern: [a-z'-]+
-# Modify to include different characters, e.g., [a-z'-\d]+ for numbers
+# Current pattern: [^\W\d_]+(?:['-][^\W\d_]+)*
+# Modify to include different characters, e.g., [^\W\d_]+(?:['-][^\W\d_]+)*\d+ for numbers
 ```
 
 **Q: Is this production-ready?**

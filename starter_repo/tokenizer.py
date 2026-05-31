@@ -20,6 +20,8 @@ def normalize_and_tokenize(text: str) -> List[str]:
     Rules:
     - Convert to lowercase
     - Extract sequences of alphabetic characters, apostrophes, and hyphens
+    - Preserve apostrophes and hyphens only when internal to a word
+      (leading or trailing quotes/hyphens around word tokens are removed)
     - Ignore numbers and other punctuation
     - Consecutive delimiters produce no empty tokens
 
@@ -48,9 +50,10 @@ def normalize_and_tokenize(text: str) -> List[str]:
     # Convert to lowercase
     text = text.lower()
 
-    # Extract sequences of [a-z-'], ignore everything else (numbers, other punctuation)
+    # Extract sequences of Unicode letters with optional internal apostrophes or
+    # hyphens. This preserves accented Latin letters such as é, ñ, and ï while
+    # treating pure punctuation sequences like --- or ''' as delimiters.
     # Pattern explanation:
-    # [a-z'-]+ matches one or more: lowercase letters, apostrophes, or hyphens
-    words = re.findall(r"[a-z'-]+", text)
-
-    return words
+    # [^\W\d_]+ matches one or more Unicode letters
+    # (?:['-][^\W\d_]+)* allows apostrophes or hyphens only when followed by letters
+    return re.findall(r"[^\W\d_]+(?:['-][^\W\d_]+)*", text, flags=re.UNICODE)
