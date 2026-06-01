@@ -56,5 +56,5 @@ expected_large_k = [("apple", 3), ("banana", 2), ("cherry", 1)]
 assert result_large_k == expected_large_k, f"Expected {expected_large_k}, got {result_large_k}"
 print("✓ k larger than vocabulary returns all words\n")
 
-print("="*50)
+print("=" * 50)
 print("✓ All counter module tests passed!")

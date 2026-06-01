@@ -33,9 +33,7 @@ def count_frequency(words: List[str]) -> Dict[str, int]:
     return dict(Counter(words))
 
 
-def get_top_k(
-    frequency_map: Dict[str, int], k: int
-) -> List[Tuple[str, int]]:
+def get_top_k(frequency_map: Dict[str, int], k: int) -> List[Tuple[str, int]]:
     """
     Get the top-K most frequent words with tie-breaking by alphabetical order.
 
@@ -61,10 +59,10 @@ def get_top_k(
         >>> freq = {'apple': 5, 'banana': 5, 'cherry': 3}
         >>> get_top_k(freq, 2)
         [('apple', 5), ('banana', 5)]  # tie-break alphabetically
-        
+
         >>> get_top_k({'word': 1}, 10)
         [('word', 1)]  # k > vocabulary size
-        
+
         >>> get_top_k({}, 5)
         []  # empty frequency map
     """

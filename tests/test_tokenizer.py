@@ -9,8 +9,6 @@ Covers:
 - Real-world examples
 """
 
-import pytest
-
 from starter_repo.tokenizer import normalize_and_tokenize
 
 
@@ -66,7 +64,7 @@ class TestNormalizeAndTokenize:
 
     def test_quotes_removed(self) -> None:
         """Test that quotes are treated as delimiters."""
-        result = normalize_and_tokenize('"hello" \'world\'')
+        result = normalize_and_tokenize("\"hello\" 'world'")
         assert result == ["hello", "world"]
 
     # ===== Number Handling =====
