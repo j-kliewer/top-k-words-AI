@@ -179,10 +179,10 @@ class TestGetTopK:
         }
         result = get_top_k(freq, 4)
         assert result == [
-            ("cat", 10),      # Tied at 10, alphabetically first
-            ("dog", 10),      # Tied at 10, alphabetically second
-            ("apple", 8),     # Tied at 8, alphabetically first
-            ("bird", 8),      # Tied at 8, alphabetically second
+            ("cat", 10),  # Tied at 10, alphabetically first
+            ("dog", 10),  # Tied at 10, alphabetically second
+            ("apple", 8),  # Tied at 8, alphabetically first
+            ("bird", 8),  # Tied at 8, alphabetically second
         ]
 
     def test_single_word_frequency_map(self) -> None:
