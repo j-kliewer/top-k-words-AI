@@ -88,6 +88,7 @@ def read_input(filepath: Optional[str], text: Optional[str]) -> str:
             sys.exit(1)
 
     # Use direct text
+    assert text is not None
     return text
 
 
