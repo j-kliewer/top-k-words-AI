@@ -55,7 +55,9 @@ class TestReadInput:
 
     def test_read_from_file(self) -> None:
         """Test reading from a valid file."""
-        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt", encoding="utf-8") as f:
+        with tempfile.NamedTemporaryFile(
+            mode="w", delete=False, suffix=".txt", encoding="utf-8"
+        ) as f:
             f.write("Hello, World!")
             temp_path = f.name
 
@@ -96,7 +98,9 @@ class TestReadInput:
 
     def test_read_file_with_unicode(self) -> None:
         """Test reading file with valid UTF-8 content."""
-        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt", encoding="utf-8") as f:
+        with tempfile.NamedTemporaryFile(
+            mode="w", delete=False, suffix=".txt", encoding="utf-8"
+        ) as f:
             f.write("Hello, World! 你好")
             temp_path = f.name
 
@@ -108,7 +112,9 @@ class TestReadInput:
 
     def test_read_empty_file(self) -> None:
         """Test reading an empty file."""
-        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt", encoding="utf-8") as f:
+        with tempfile.NamedTemporaryFile(
+            mode="w", delete=False, suffix=".txt", encoding="utf-8"
+        ) as f:
             temp_path = f.name
 
         try:
@@ -128,7 +134,9 @@ class TestReadInput:
 
     def test_read_file_with_encoding_error(self, capsys: pytest.CaptureFixture[str]) -> None:
         """Test error when file has encoding issues."""
-        with tempfile.NamedTemporaryFile(mode="wb", delete=False, suffix=".txt") as f:
+        with tempfile.NamedTemporaryFile(
+            mode="wb", delete=False, suffix=".txt"
+        ) as f:
             # Write invalid UTF-8 bytes
             f.write(b'\x80\x81\x82\x83')
             temp_path = f.name

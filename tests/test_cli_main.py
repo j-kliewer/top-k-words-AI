@@ -24,7 +24,9 @@ class TestMainWithFileInput:
 
     def test_main_with_file_and_debug_enabled(self, capsys: pytest.CaptureFixture[str]) -> None:
         """Test main() with file input and debug logging enabled."""
-        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt") as f:
+        with tempfile.NamedTemporaryFile(
+            mode="w", delete=False, suffix=".txt"
+        ) as f:
             f.write("apple banana apple cherry banana apple")
             temp_path = f.name
 
@@ -47,7 +49,9 @@ class TestMainWithFileInput:
 
     def test_main_with_file_and_debug_disabled(self, capsys: pytest.CaptureFixture[str]) -> None:
         """Test main() with file input and debug logging disabled."""
-        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt") as f:
+        with tempfile.NamedTemporaryFile(
+            mode="w", delete=False, suffix=".txt"
+        ) as f:
             f.write("apple banana apple cherry banana apple")
             temp_path = f.name
 
@@ -66,7 +70,9 @@ class TestMainWithFileInput:
 
     def test_main_with_file_single_top_result(self, capsys: pytest.CaptureFixture[str]) -> None:
         """Test main() with file input requesting single top result."""
-        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt") as f:
+        with tempfile.NamedTemporaryFile(
+            mode="w", delete=False, suffix=".txt"
+        ) as f:
             f.write("dog dog dog cat cat bird")
             temp_path = f.name
 
@@ -84,7 +90,9 @@ class TestMainWithFileInput:
 
     def test_main_with_file_k_larger_than_unique_words(self, capsys: pytest.CaptureFixture[str]) -> None:
         """Test main() when k is larger than number of unique words."""
-        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt") as f:
+        with tempfile.NamedTemporaryFile(
+            mode="w", delete=False, suffix=".txt"
+        ) as f:
             f.write("apple banana cherry")
             temp_path = f.name
 
@@ -117,7 +125,9 @@ class TestMainWithFileInput:
 
     def test_main_with_file_whitespace_only(self, capsys: pytest.CaptureFixture[str]) -> None:
         """Test main() with file containing only whitespace."""
-        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt") as f:
+        with tempfile.NamedTemporaryFile(
+            mode="w", delete=False, suffix=".txt"
+        ) as f:
             f.write("   \n\t\n   ")
             temp_path = f.name
 
@@ -137,7 +147,10 @@ class TestMainWithTextInput:
 
     def test_main_with_text_input_and_debug_enabled(self, capsys: pytest.CaptureFixture[str]) -> None:
         """Test main() with text input and debug logging enabled."""
-        with patch("sys.argv", ["topk", "--text", "apple banana apple cherry banana apple", "-k", "2", "--debug"]):
+        with patch(
+            "sys.argv",
+            ["topk", "--text", "apple banana apple cherry banana apple", "-k", "2", "--debug"],
+        ):
             main()
 
         captured = capsys.readouterr()
@@ -150,7 +163,9 @@ class TestMainWithTextInput:
 
     def test_main_with_text_input_and_debug_disabled(self, capsys: pytest.CaptureFixture[str]) -> None:
         """Test main() with text input and debug logging disabled."""
-        with patch("sys.argv", ["topk", "--text", "apple banana apple cherry banana apple", "-k", "2"]):
+        with patch(
+            "sys.argv", ["topk", "--text", "apple banana apple cherry banana apple", "-k", "2"]
+        ):
             main()
 
         captured = capsys.readouterr()
@@ -236,7 +251,9 @@ class TestMainArgumentParsing:
 
     def test_main_both_file_and_text(self, capsys: pytest.CaptureFixture[str]) -> None:
         """Test main() fails when both file and text are provided."""
-        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt") as f:
+        with tempfile.NamedTemporaryFile(
+            mode="w", delete=False, suffix=".txt"
+        ) as f:
             f.write("test")
             temp_path = f.name
 
