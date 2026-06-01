@@ -119,6 +119,34 @@ def test_with_punctuation():
     print("="*60)
 
 
+def test_with_quotes_and_hyphens():
+    """Test tokenizer behavior for quotes and internal hyphens."""
+    print("\n" + "="*60)
+    print("QUOTES AND HYPHENS TEST")
+    print("="*60)
+
+    text = "\"Hello\" 'world' co-operate can't apple123banana"
+    print(f"\nInput: {text}")
+
+    print("\n1. Tokenizing...")
+    words = normalize_and_tokenize(text)
+    print(f"   ✓ Tokens: {words}")
+    expected_tokens = ["hello", "world", "co-operate", "can't", "apple", "banana"]
+    assert words == expected_tokens, f"Expected {expected_tokens}, got {words}"
+
+    print("\n2. Counting...")
+    freq_map = count_frequency(words)
+    print(f"   ✓ Frequency: {freq_map}")
+
+    print("\n3. Getting top-5...")
+    results = get_top_k(freq_map, 5)
+    print(f"   ✓ Results: {results}")
+
+    print(f"\n{'='*60}")
+    print("✓ QUOTES AND HYPHENS TEST PASSED!")
+    print("="*60)
+
+
 def test_tie_breaking():
     """Test tie-breaking in ranking."""
     print("\n" + "="*60)
@@ -149,6 +177,7 @@ if __name__ == "__main__":
     test_end_to_end()
     test_with_direct_text()
     test_with_punctuation()
+    test_with_quotes_and_hyphens()
     test_tie_breaking()
 
     print("\n" + "="*60)

@@ -126,6 +126,33 @@ class TestReadInput:
             captured = capsys.readouterr()
             assert "Not a file" in captured.err
 
+    def test_read_file_with_encoding_error(self, capsys) -> None:
+        """Test error when file has encoding issues."""
+        with tempfile.NamedTemporaryFile(mode="wb", delete=False, suffix=".txt") as f:
+            # Write invalid UTF-8 bytes
+            f.write(b'\x80\x81\x82\x83')
+            temp_path = f.name
+
+        try:
+            with pytest.raises(SystemExit) as exc_info:
+                read_input(temp_path, None)
+            assert exc_info.value.code == 1
+            captured = capsys.readouterr()
+            assert "encoding error" in captured.err
+        finally:
+            Path(temp_path).unlink()
+
+    def test_read_file_with_oserror(self, capsys) -> None:
+        """Test error when file cannot be read due to OS error."""
+        with patch("pathlib.Path.exists", return_value=True):
+            with patch("pathlib.Path.is_file", return_value=True):
+                with patch("pathlib.Path.read_text", side_effect=OSError("Permission denied")):
+                    with pytest.raises(SystemExit) as exc_info:
+                        read_input("some_file.txt", None)
+                    assert exc_info.value.code == 1
+                    captured = capsys.readouterr()
+                    assert "Could not read file" in captured.err
+
 
 class TestValidateK:
     """Test suite for validate_k function."""
