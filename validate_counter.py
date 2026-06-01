@@ -41,5 +41,20 @@ try:
 except ValueError as e:
     print(f"✓ Correctly raised ValueError for k=0: {e}\n")
 
+# Test empty frequency map
+print("=== Empty frequency map ===")
+result_empty = get_top_k({}, 5)
+print(f"Result for empty frequency map: {result_empty}")
+assert result_empty == [], f"Expected [], got {result_empty}"
+print("✓ Empty frequency map works\n")
+
+# Test k larger than vocabulary
+print("=== k larger than vocabulary ===")
+result_large_k = get_top_k(freq, 10)
+print(f"Result for k=10: {result_large_k}")
+expected_large_k = [("apple", 3), ("banana", 2), ("cherry", 1)]
+assert result_large_k == expected_large_k, f"Expected {expected_large_k}, got {result_large_k}"
+print("✓ k larger than vocabulary returns all words\n")
+
 print("="*50)
 print("✓ All counter module tests passed!")
